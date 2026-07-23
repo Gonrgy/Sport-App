@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  SectionList,
   TouchableOpacity,
   Image,
   Alert,
@@ -18,7 +18,14 @@ export default function AllExercisesScreen({ navigation, route }) {
   const { categoryName } = route.params || {}; // Gibt mir den Kategorie namen zum filtern der Daten.
   const exercises = useCategoriesStore((state) => state.exercises); // store Array.
   const setExercises = useCategoriesStore((state) => state.setExercises); // store Array.
+  const [expandedSections, setExpandedSections] = useState({}); // Array wo die werte mit true oder false angegeben sind damit man weiß wer offen ist und wer nicht.
   const filteredArray = filterLogs(); // Array wird gefiltert anhand einer Funktion.
+  const sections = sectionLogs(filteredArray);
+
+  const visibleSections = sections.map((section) => ({
+    ...section,
+    data: expandedSections[section.title] ? section.data : [],
+  }));
   const db = useSQLiteContext(); //DataBase für Sql.
 
   //Overlays variablen für reps,dauer etc.
@@ -61,13 +68,46 @@ export default function AllExercisesScreen({ navigation, route }) {
   //function to filter exercise Array nach Kategorie.
   function filterLogs() {
     const array = [...exercises];
-    const filtered = array.filter((el, index, array) => {
-      return el.name === categoryName;
-    });
+    const filtered = array.filter((el) => el.name === categoryName);
     return filtered;
   }
 
-  //Flatlist design.
+  function sectionLogs(filtered) {
+    const grouped = filtered.reduce((acc, item) => {
+      const key = item.exerciseName || "Unbekannt";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    }, {});
+
+    return Object.keys(grouped)
+      .sort((a, b) => a.localeCompare(b, "de", { sensitivity: "base" }))
+      .map((title) => {
+        const data = grouped[title];
+        return {
+          title,
+          data,
+          totalReps: data.reduce((sum, item) => sum + (item.reps ?? 0), 0),
+          totalWeight: data.reduce(
+            (sum, item) => (item.weight > sum ? item.weight : sum),
+            0,
+          ),
+          totalDuration: data.reduce(
+            (sum, item) => sum + (item.duration ?? 0),
+            0,
+          ),
+        };
+      });
+  }
+
+  function toggleSection(title) {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  }
+
+  //SectionList design.
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onLongPress={() => {
@@ -158,10 +198,39 @@ export default function AllExercisesScreen({ navigation, route }) {
         </View>
       </View>
 
-      <FlatList
-        data={filteredArray}
+      <SectionList
+        sections={visibleSections}
         renderItem={renderItem}
-        keyExtractor={(i) => i.id}
+        renderSectionHeader={({ section }) => (
+          <TouchableOpacity
+            onPress={() => toggleSection(section.title)}
+            style={styles.sectionHeader}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            <View style={styles.sectionHeaderStats}>
+              <View style={styles.headerStatPill}>
+                <Text style={styles.headerStatText}>
+                  {section.totalReps + " reps"}
+                </Text>
+              </View>
+              <View style={styles.headerStatPill}>
+                <Text style={styles.headerStatText}>
+                  {section.totalWeight + " max kg"}
+                </Text>
+              </View>
+              <View style={styles.headerStatPill}>
+                <Text style={styles.headerStatText}>
+                  {section.totalDuration + " sec"}
+                </Text>
+              </View>
+              <Text style={styles.collapseIcon}>
+                {expandedSections[section.title] ? "▾" : "▸"}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
       />
     </SafeAreaView>
@@ -185,23 +254,24 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   featuredCard: {
-    backgroundColor: "#121826",
+    backgroundColor: "#f7fdf9",
     borderRadius: 16,
     padding: 18,
     marginBottom: 18,
-    shadowColor: "#000",
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowColor: "#1f2937",
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 4,
   },
   featuredCategory: {
-    color: "#8da0c1",
+    color: "#1f2937",
     fontSize: 12,
     fontWeight: "700",
     marginBottom: 6,
+    letterSpacing: 0.8,
   },
   featuredTitle: {
-    color: "#ffffff",
+    color: "#1f2937",
     fontSize: 22,
     fontWeight: "800",
   },
@@ -223,7 +293,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   backButtonText: {
-    color: "#8da0c1",
+    color: "white",
     fontWeight: "700",
     fontSize: 14,
   },
@@ -232,7 +302,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: "row",
-    backgroundColor: "#0f1722",
+    backgroundColor: "#ffffff",
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
@@ -240,38 +310,43 @@ const styles = StyleSheet.create({
   },
   cardLeft: {
     flex: 1,
+    marginRight: 8,
   },
   cardCategory: {
-    color: "#8da0c1",
+    color: "#0b1220",
     fontSize: 11,
     fontWeight: "700",
     marginBottom: 4,
+    flexShrink: 1,
   },
   cardTitle: {
-    color: "#ffffff",
+    color: "#0b1220",
     fontSize: 16,
     fontWeight: "800",
     marginBottom: 8,
+    flexShrink: 1,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
   },
   pill: {
-    backgroundColor: "#0b1228",
+    backgroundColor: "#f0fdf4",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 10,
     marginRight: 8,
+    marginBottom: 6,
   },
   pillLarge: {
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
   pillText: {
-    color: "#8da0c1",
-    fontSize: 12,
-    fontWeight: "700",
+    color: "#166534",
+    fontSize: 13,
+    fontWeight: "800",
   },
   thumbnail: {
     width: 64,
@@ -279,5 +354,44 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#1e2733",
     marginLeft: 12,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#f7fdf9",
+    borderRadius: 12,
+    marginBottom: 10,
+    gap: 8,
+  },
+  sectionHeaderText: {
+    color: "black",
+    fontSize: 14,
+    fontWeight: "700",
+    flexShrink: 1,
+  },
+  sectionHeaderStats: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  headerStatPill: {
+    backgroundColor: "#f0fdf4",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+  },
+  headerStatText: {
+    color: "#166534",
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  collapseIcon: {
+    color: "#2f7d5f",
+    fontSize: 14,
+    marginLeft: 6,
+    fontWeight: "700",
   },
 });

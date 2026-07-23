@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   categoryCard: {
-    backgroundColor: "#131a2c",
+    backgroundColor: "white",
     borderRadius: 22,
     marginBottom: 14,
     overflow: "hidden",
@@ -184,10 +184,14 @@ const styles = StyleSheet.create({
   categoryHeader: {
     paddingVertical: 18,
     paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
   },
   categoryTitle: {
-    color: "#ffffff",
+    color: "#08121e",
     fontSize: 17,
     fontWeight: "800",
+    textAlign: "center",
+    flexShrink: 1,
   },
 });

@@ -25,12 +25,26 @@ import { alle_tabellen } from "../functions/functionsSqLite";
 import { useCategoriesStore } from "../functions/storeData";
 
 export default function DashboardScreen({ navigation }) {
-  //const [category, setcategory] = useState([]);
   const db = useSQLiteContext();
 
   const setCategories = useCategoriesStore((state) => state.setCategories);
   const setExercises = useCategoriesStore((state) => state.setExercises);
   const exercises = useCategoriesStore((state) => state.exercises);
+
+  const [libraryItemsFiltered, setLibraryItemsFiltered] =
+    useState(libraryItems);
+
+  function filter_library_items(text) {
+    if (text === "All") {
+      setLibraryItemsFiltered(libraryItems);
+    } else {
+      const array = [...libraryItems];
+      const filtered = array.filter((el, index, array) => {
+        return el.tags.includes(text);
+      });
+      setLibraryItemsFiltered(filtered);
+    }
+  }
 
   console.log(JSON.stringify(exercises, null, 2));
 
@@ -59,6 +73,9 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.filterRow}>
           {filters.map((text, index) => (
             <TouchableOpacity
+              onPress={() => {
+                filter_library_items(text);
+              }}
               key={index}
               style={styles.filterPill}
               activeOpacity={0.8}
@@ -68,7 +85,7 @@ export default function DashboardScreen({ navigation }) {
           ))}
         </View>
         <View style={styles.grid}>
-          {libraryItems.map((item) => (
+          {libraryItemsFiltered.map((item) => (
             <TouchableOpacity
               key={item.id}
               onPress={() => {
@@ -93,8 +110,8 @@ export default function DashboardScreen({ navigation }) {
                 <Text style={styles.cardTitle}>{item.title}</Text>
                 <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
                 <View style={styles.tagsRow}>
-                  {item.tags.map((tag) => (
-                    <View key={tag} style={styles.tagBubble}>
+                  {item.tags.map((tag, index) => (
+                    <View key={`${tag}-${index}`} style={styles.tagBubble}>
                       <Text style={styles.tagLabel}>{tag}</Text>
                     </View>
                   ))}
@@ -159,7 +176,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: "48%",
     borderRadius: 24,
-    backgroundColor: "#131a2c",
+    backgroundColor: "#ffffff",
     marginBottom: 18,
     overflow: "hidden",
     shadowColor: "#000",
@@ -196,13 +213,13 @@ const styles = StyleSheet.create({
     padding: 14,
   },
   cardTitle: {
-    color: "#ffffff",
+    color: "#0b1220",
     fontSize: 17,
     fontWeight: "700",
     marginBottom: 6,
   },
   cardSubtitle: {
-    color: "#9fb0cb",
+    color: "#4b5563",
     fontSize: 12,
     marginBottom: 10,
   },
@@ -212,7 +229,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   tagBubble: {
-    backgroundColor: "rgba(255, 255, 255, 0.08)",
+    backgroundColor: "#0b1220",
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 6,
@@ -220,7 +237,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   tagLabel: {
-    color: "#b8c5e0",
+    color: "white",
     fontSize: 11,
   },
 });
