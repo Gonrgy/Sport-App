@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "sport",
+    "name": "Sport",
     "slug": "sport",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/übungen/outdoor.jpg",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true
@@ -12,17 +12,15 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/übungen/outdoor.jpg",
+        "backgroundImage": "./assets/übungen/outdoor.jpg",
+        "monochromeImage": "./assets/übungen/outdoor.jpg"
       },
       "package": "com.newlearner.sport"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-sqlite"
-    ]
+    "plugins": ["expo-sqlite"]
   }
 }

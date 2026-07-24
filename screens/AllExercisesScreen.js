@@ -204,7 +204,7 @@ export default function AllExercisesScreen({ navigation, route }) {
             </View>
           </View>
           <Image
-            source={require("../assets/übungen/pushups.jpg")}
+            source={require("../assets/übungen/outdoor.jpg")}
             style={styles.featuredImage}
             resizeMode="cover"
           />

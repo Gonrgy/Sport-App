@@ -244,15 +244,21 @@ export default function ModalScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.55)",
+    backgroundColor: "rgba(0, 0, 0, 0.65)",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
   },
   modal: {
     backgroundColor: "#101824",
-    borderRadius: 28,
-    padding: 20,
+    borderRadius: 24,
+    padding: 18,
     overflow: "hidden",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8,
   },
   modalScroll: {
     flex: 1,
@@ -267,7 +273,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 12,
   },
   headerTitle: {
     color: "#d8e3f6",
@@ -296,13 +302,13 @@ const styles = StyleSheet.create({
   exerciseSubtitle: {
     color: "#7fa1cf",
     fontSize: 13,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   imageCard: {
-    borderRadius: 20,
+    borderRadius: 18,
     overflow: "hidden",
     backgroundColor: "#ffffff",
-    marginBottom: 18,
+    marginBottom: 14,
   },
   image: {
     width: "100%",
@@ -361,9 +367,9 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: "#29c872",
     borderRadius: 16,
-    paddingVertical: 16,
+    paddingVertical: 14,
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 10,
   },
   saveButtonText: {
     color: "#08121e",
