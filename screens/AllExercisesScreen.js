@@ -22,6 +22,19 @@ export default function AllExercisesScreen({ navigation, route }) {
   const filteredArray = filterLogs(); // Array wird gefiltert anhand einer Funktion.
   const sections = sectionLogs(filteredArray);
 
+  function style_handler(
+    section,
+    style,
+    backgroundColorTrue,
+    backgroundColorFalse,
+    objectName,
+  ) {
+    const design = expandedSections[section.title]
+      ? [style, { [objectName]: backgroundColorTrue }]
+      : [style, { [objectName]: backgroundColorFalse }];
+    return design;
+  }
+
   const visibleSections = sections.map((section) => ({
     ...section,
     data: expandedSections[section.title] ? section.data : [],
@@ -165,7 +178,7 @@ export default function AllExercisesScreen({ navigation, route }) {
         </TouchableOpacity>
       </View>
       <Text style={styles.header}>Logged Sessions</Text>
-      <Text style={styles.subtitle}>A detailed look at your sessions</Text>
+      <Text style={styles.subtitle}>A detailed at your sessions</Text>
 
       <View style={styles.featuredCard}>
         <View
@@ -204,23 +217,63 @@ export default function AllExercisesScreen({ navigation, route }) {
         renderSectionHeader={({ section }) => (
           <TouchableOpacity
             onPress={() => toggleSection(section.title)}
-            style={styles.sectionHeader}
+            style={style_handler(
+              section,
+              styles.sectionHeader,
+              "#94A3B8",
+              "white",
+              "backgroundColor",
+            )}
             activeOpacity={0.8}
           >
-            <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            <Text
+              style={style_handler(
+                section,
+                styles.sectionHeaderText,
+                "white",
+                "black",
+                "color",
+              )}
+            >
+              {section.title}
+            </Text>
             <View style={styles.sectionHeaderStats}>
               <View style={styles.headerStatPill}>
-                <Text style={styles.headerStatText}>
+                <Text
+                  style={style_handler(
+                    section,
+                    styles.headerStatText,
+                    "white",
+                    "black",
+                    "color",
+                  )}
+                >
                   {section.totalReps + " reps"}
                 </Text>
               </View>
               <View style={styles.headerStatPill}>
-                <Text style={styles.headerStatText}>
+                <Text
+                  style={style_handler(
+                    section,
+                    styles.headerStatText,
+                    "white",
+                    "black",
+                    "color",
+                  )}
+                >
                   {section.totalWeight + " max kg"}
                 </Text>
               </View>
               <View style={styles.headerStatPill}>
-                <Text style={styles.headerStatText}>
+                <Text
+                  style={style_handler(
+                    section,
+                    styles.headerStatText,
+                    "white",
+                    "black",
+                    "color",
+                  )}
+                >
                   {section.totalDuration + " sec"}
                 </Text>
               </View>
@@ -302,7 +355,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: "row",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#94A3B8",
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
@@ -313,14 +366,14 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   cardCategory: {
-    color: "#0b1220",
+    color: "white",
     fontSize: 11,
     fontWeight: "700",
     marginBottom: 4,
     flexShrink: 1,
   },
   cardTitle: {
-    color: "#0b1220",
+    color: "white",
     fontSize: 16,
     fontWeight: "800",
     marginBottom: 8,
@@ -332,7 +385,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   pill: {
-    backgroundColor: "#f0fdf4",
+    backgroundColor: "white",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -344,7 +397,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   pillText: {
-    color: "#166534",
+    color: "black",
     fontSize: 13,
     fontWeight: "800",
   },
@@ -361,7 +414,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: 12,
-    backgroundColor: "#f7fdf9",
+
     borderRadius: 12,
     marginBottom: 10,
     gap: 8,
@@ -378,18 +431,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   headerStatPill: {
-    backgroundColor: "#f0fdf4",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
   },
   headerStatText: {
-    color: "#166534",
+    color: "black",
     fontSize: 13,
     fontWeight: "800",
   },
   collapseIcon: {
-    color: "#2f7d5f",
+    color: "black",
     fontSize: 14,
     marginLeft: 6,
     fontWeight: "700",
