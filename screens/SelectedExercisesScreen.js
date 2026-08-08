@@ -19,6 +19,7 @@ import {
 import { useCategoriesStore } from "../functions/storeData";
 import { delete_one_category } from "../functions/functionsSqLite";
 
+//  DEINE WORKOUT KATEGORIEN SCREEN.
 export default function SelectedExercisesScreen({ navigation }) {
   const [userInput, setUserInput] = useState("");
   const db = useSQLiteContext();
@@ -71,7 +72,9 @@ export default function SelectedExercisesScreen({ navigation }) {
         />
         <TouchableOpacity
           onPress={async () => {
-            const input = userInput.toLowerCase();
+            const dateNow = new Date().toLocaleDateString("de-DE");
+            const userInputWithDate = `${userInput} - (${dateNow})`;
+            const input = userInputWithDate.toLowerCase();
             const exists = categories.some((el) => {
               return el.name.toLowerCase() === input;
             });
@@ -88,7 +91,7 @@ export default function SelectedExercisesScreen({ navigation }) {
             } else {
               await save_in_categories_handler(
                 db,
-                input,
+                userInputWithDate,
                 setCategories,
                 categories,
               );

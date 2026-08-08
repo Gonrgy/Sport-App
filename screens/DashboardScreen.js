@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { libraryItems } from "../data/exercises";
@@ -31,22 +31,21 @@ export default function DashboardScreen({ navigation }) {
   const setExercises = useCategoriesStore((state) => state.setExercises);
   const exercises = useCategoriesStore((state) => state.exercises);
 
-  const [libraryItemsFiltered, setLibraryItemsFiltered] =
-    useState(libraryItems);
+  const [filterName, setFilterName] = useState("All");
 
-  function filter_library_items(text) {
-    if (text === "All") {
-      setLibraryItemsFiltered(libraryItems);
+  const exercises_use_memo_handler_array = useMemo(() => {
+    if (filterName === "All") {
+      return libraryItems;
     } else {
       const array = [...libraryItems];
       const filtered = array.filter((el, index, array) => {
-        return el.tags.includes(text);
+        return el.tags.includes(filterName);
       });
-      setLibraryItemsFiltered(filtered);
+      return filtered;
     }
-  }
+  }, [filterName]);
 
-  console.log(JSON.stringify(exercises, null, 2));
+  //console.log(JSON.stringify(exercises, null, 2));
 
   useEffect(() => {
     async function fetchData() {
@@ -73,9 +72,7 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.filterRow}>
           {filters.map((text, index) => (
             <TouchableOpacity
-              onPress={() => {
-                filter_library_items(text);
-              }}
+              onPress={() => setFilterName(text)}
               key={index}
               style={styles.filterPill}
               activeOpacity={0.8}
@@ -85,7 +82,7 @@ export default function DashboardScreen({ navigation }) {
           ))}
         </View>
         <View style={styles.grid}>
-          {libraryItemsFiltered.map((item) => (
+          {exercises_use_memo_handler_array.map((item) => (
             <TouchableOpacity
               key={item.id}
               onPress={() => {

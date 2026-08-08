@@ -16,18 +16,40 @@ import { useSQLiteContext } from "expo-sqlite";
 import { save_in_exercise_entries_handler } from "../functions/functionsSqLite";
 import { useCategoriesStore } from "../functions/storeData";
 
+// DER SCREEN WO DU DEINE DATEN EINGIBST REPS,DAUER ETC.
 export default function ModalScreen({ route, navigation }) {
   const { exercise, subtitle, image, tags } = route.params;
   const [reps, setReps] = useState(0);
   const [dauer, setDauer] = useState(0);
   const [gewicht, setGewicht] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  //const [selectedCategory, setSelectedCategory] = useState("");
   const [categoryOpen, setCategoryOpen] = useState(false);
   const categories = useCategoriesStore((state) => state.categories);
   const setExercises = useCategoriesStore((state) => state.setExercises);
   const exercises = useCategoriesStore((state) => state.exercises);
+  const selectedCategory = useCategoriesStore(
+    (state) => state.selectedCategory,
+  );
+  const setSelectedCategory = useCategoriesStore(
+    (state) => state.setSelectedCategory,
+  );
+
   const isFocused = useIsFocused();
   const db = useSQLiteContext();
+
+  function nummer_erhöhen_handler(setVariable, zahl, rechenoperationen) {
+    setVariable((prev) => {
+      switch (rechenoperationen) {
+        case "plus":
+          return prev + zahl;
+          break;
+        case "minus":
+          if (prev <= 0) return 0;
+          return prev - zahl;
+          break;
+      }
+    });
+  }
 
   async function save_exercise_data() {
     try {
@@ -83,10 +105,7 @@ export default function ModalScreen({ route, navigation }) {
               <View style={styles.stepperRow}>
                 <TouchableOpacity
                   onPress={() => {
-                    setReps((prev) => {
-                      if (prev <= 0) return 0;
-                      return prev - 1;
-                    });
+                    nummer_erhöhen_handler(setReps, 1, "minus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -95,14 +114,10 @@ export default function ModalScreen({ route, navigation }) {
                 <Text style={styles.stepperValue}>{reps}</Text>
                 <TouchableOpacity
                   onLongPress={() => {
-                    setReps((prev) => {
-                      return prev + 5;
-                    });
+                    nummer_erhöhen_handler(setReps, 10, "plus");
                   }}
                   onPress={() => {
-                    setReps((prev) => {
-                      return prev + 1;
-                    });
+                    nummer_erhöhen_handler(setReps, 1, "plus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -116,10 +131,7 @@ export default function ModalScreen({ route, navigation }) {
               <View style={styles.stepperRow}>
                 <TouchableOpacity
                   onPress={() => {
-                    setDauer((prev) => {
-                      if (prev <= 0) return 0;
-                      return prev - 1;
-                    });
+                    nummer_erhöhen_handler(setDauer, 1, "minus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -128,14 +140,10 @@ export default function ModalScreen({ route, navigation }) {
                 <Text style={styles.stepperValue}>{dauer}s</Text>
                 <TouchableOpacity
                   onLongPress={() => {
-                    setDauer((prev) => {
-                      return prev + 5;
-                    });
+                    nummer_erhöhen_handler(setDauer, 15, "plus");
                   }}
                   onPress={() => {
-                    setDauer((prev) => {
-                      return prev + 1;
-                    });
+                    nummer_erhöhen_handler(setDauer, 1, "plus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -149,10 +157,7 @@ export default function ModalScreen({ route, navigation }) {
               <View style={styles.stepperRow}>
                 <TouchableOpacity
                   onPress={() => {
-                    setGewicht((prev) => {
-                      if (prev <= 0) return 0;
-                      return prev - 1;
-                    });
+                    nummer_erhöhen_handler(setGewicht, 1, "minus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -161,14 +166,10 @@ export default function ModalScreen({ route, navigation }) {
                 <Text style={styles.stepperValue}>{gewicht} kg</Text>
                 <TouchableOpacity
                   onLongPress={() => {
-                    setGewicht((prev) => {
-                      return prev + 5;
-                    });
+                    nummer_erhöhen_handler(setGewicht, 5, "plus");
                   }}
                   onPress={() => {
-                    setGewicht((prev) => {
-                      return prev + 1;
-                    });
+                    nummer_erhöhen_handler(setGewicht, 1, "plus");
                   }}
                   style={styles.stepperButton}
                 >
@@ -226,7 +227,7 @@ export default function ModalScreen({ route, navigation }) {
                   );
                 } else {
                   await save_exercise_data();
-                  console.log(JSON.stringify(exercises, null, 2));
+                  //console.log(JSON.stringify(exercises, null, 2));
                   navigation.goBack();
                 }
               }}

@@ -176,6 +176,15 @@ export default function AllExercisesScreen({ navigation, route }) {
         >
           <Text style={styles.backButtonText}>{"<"} Back</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Dashboard");
+          }}
+          style={styles.backButton}
+        >
+          <Text style={styles.backButtonText}>Übungen</Text>
+        </TouchableOpacity>
       </View>
       <Text style={styles.header}>Logged Sessions</Text>
       <Text style={styles.subtitle}>A detailed at your sessions</Text>
@@ -204,7 +213,7 @@ export default function AllExercisesScreen({ navigation, route }) {
             </View>
           </View>
           <Image
-            source={require("../assets/übungen/outdoor.jpg")}
+            source={require("../assets/uebungen/outdoor.jpg")}
             style={styles.featuredImage}
             resizeMode="cover"
           />
@@ -338,6 +347,7 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 8,
   },
   backButton: {

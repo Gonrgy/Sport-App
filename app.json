@@ -4,7 +4,7 @@
     "slug": "sport",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/übungen/outdoor.jpg",
+    "icon": "./assets/uebungen/outdoor.jpg",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true
@@ -12,18 +12,16 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/übungen/outdoor.jpg",
-        "backgroundImage": "./assets/übungen/outdoor.jpg",
-        "monochromeImage": "./assets/übungen/outdoor.jpg"
+        "foregroundImage": "./assets/uebungen/outdoor.jpg",
+        "backgroundImage": "./assets/uebungen/outdoor.jpg",
+        "monochromeImage": "./assets/uebungen/outdoor.jpg"
       },
       "package": "com.newlearner.sport"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-sqlite"
-    ],
+    "plugins": ["expo-sqlite"],
     "extra": {
       "eas": {
         "projectId": "3e0aa95d-0e03-4b2e-a475-b97c5fbccd30"
