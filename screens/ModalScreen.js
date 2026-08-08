@@ -65,7 +65,6 @@ export default function ModalScreen({ route, navigation }) {
       );
     } catch (e) {
       Alert.alert("Fehler", "Bitte beachten Sie Ihre eingaben");
-      console.log("Fehler " + e);
     }
   }
 

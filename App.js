@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+//import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DashboardScreen from "./screens/DashboardScreen";
 import SelectedExercisesScreen from "./screens/SelectedExercisesScreen";
 import ModalScreen from "./screens/ModalScreen";
@@ -16,8 +17,8 @@ import {
   create_table,
 } from "./functions/functionsSqLite";
 
-const Stack = createStackNavigator();
-
+//const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <SQLiteProvider

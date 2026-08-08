@@ -116,7 +116,6 @@ export default function SelectedExercisesScreen({ navigation }) {
             activeOpacity={0.8}
             style={styles.categoryCard}
             onPress={() => {
-              console.log("gedrückt: " + category.name);
               navigation.navigate("AllExercises", {
                 categoryName: category.name,
               });

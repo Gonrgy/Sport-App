@@ -45,8 +45,6 @@ export default function DashboardScreen({ navigation }) {
     }
   }, [filterName]);
 
-  //console.log(JSON.stringify(exercises, null, 2));
-
   useEffect(() => {
     async function fetchData() {
       //await alle_tabellen(db);

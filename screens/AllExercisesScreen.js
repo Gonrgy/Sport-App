@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -21,6 +21,24 @@ export default function AllExercisesScreen({ navigation, route }) {
   const [expandedSections, setExpandedSections] = useState({}); // Array wo die werte mit true oder false angegeben sind damit man weiß wer offen ist und wer nicht.
   const filteredArray = filterLogs(); // Array wird gefiltert anhand einer Funktion.
   const sections = sectionLogs(filteredArray);
+  const db = useSQLiteContext(); //DataBase für Sql.
+
+  //function um die reps, dauer etc. zu addieren.
+  function addieren(angabe) {
+    const array = [...filteredArray];
+    const addiert = array.reduce((total, exercise) => {
+      return total + exercise[angabe];
+    }, 0);
+    return addiert;
+  }
+  // Das Maximale höchstgewicht wird gefiltered.
+  function get_highest_weight() {
+    const array = [...filteredArray];
+    const maxId = array.reduce((max, arrayWert) => {
+      return arrayWert.weight > max ? arrayWert.weight : max;
+    }, 0);
+    return maxId;
+  }
 
   function style_handler(
     section,
@@ -39,7 +57,6 @@ export default function AllExercisesScreen({ navigation, route }) {
     ...section,
     data: expandedSections[section.title] ? section.data : [],
   }));
-  const db = useSQLiteContext(); //DataBase für Sql.
 
   //Overlays variablen für reps,dauer etc.
   const repsAnzeige = addieren("reps");
@@ -55,6 +72,7 @@ export default function AllExercisesScreen({ navigation, route }) {
     setExercises(filterData);
   }
 
+  /*
   //Das höchste Gewicht wird rausgefiltered.
   function get_highest_weight() {
     const array = [...filteredArray];
@@ -63,7 +81,9 @@ export default function AllExercisesScreen({ navigation, route }) {
     }, 0);
     return maxId;
   }
+*/
 
+  /*
   // function um die reps etc zu addieren.
   function addieren(angabe) {
     const array = [...filteredArray];
@@ -72,7 +92,7 @@ export default function AllExercisesScreen({ navigation, route }) {
     }, 0);
     return addiert;
   }
-
+*/
   //function für Einzahl und Mehrzahl
   function mehr_zahl(item, objekt, einZahl, mehrZahl) {
     const a = item[objekt] <= 1 ? einZahl : mehrZahl;

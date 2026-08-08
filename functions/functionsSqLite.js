@@ -1,12 +1,11 @@
+import { Alert } from "react-native";
 import { useCategoriesStore } from "./storeData";
 
 export async function pragma_setzen(db) {
   try {
     const query = `PRAGMA foreign_keys = ON;`;
     db.execAsync(query);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 }
 
 export async function create_table_kategorie(db) {
@@ -16,9 +15,7 @@ export async function create_table_kategorie(db) {
     name TEXT NOT NULL UNIQUE
 );`;
     await db.execAsync(query);
-  } catch (error) {
-    console.log("Fehler beim erstellen der Tabelle:", error);
-  }
+  } catch (error) {}
 }
 
 export async function create_table(db) {
@@ -36,9 +33,7 @@ export async function create_table(db) {
         ON DELETE CASCADE
 );`;
     await db.execAsync(query);
-  } catch (error) {
-    console.log("Fehler beim erstellen der Tabelle:", error);
-  }
+  } catch (error) {}
 }
 
 //Tabelle wo übungen reps etc sind.
@@ -47,10 +42,7 @@ export async function read_exercise_entries_data_handler(db, setArray) {
     const query = `SELECT * FROM exercise_entries`;
     const allRows = await db.getAllAsync(query);
     setArray(allRows);
-    console.log("exercise entries Tabelle konnte gelesen werden.");
-  } catch (e) {
-    console.log("exercise entries Tabelle konnte nicht gelesen werden." + e);
-  }
+  } catch (e) {}
 }
 
 //Categories Tabelle
@@ -59,11 +51,7 @@ export async function read_categories_data_handler(db, setArray) {
     const query = `SELECT * FROM categories`;
     const allRows = await db.getAllAsync(query);
     setArray(allRows);
-
-    console.log("Die Categories Tabelle wurde erfolgreich gelesen.");
-  } catch (e) {
-    console.log("Die Categories Tabelle konnte nicht gelesen werden." + e);
-  }
+  } catch (e) {}
 }
 
 export async function save_in_categories_handler(
@@ -79,10 +67,8 @@ export async function save_in_categories_handler(
     const array = [...lastArray];
     array.push({ id: id, name: textInput });
     setCategories(array);
-
-    console.log("Daten konnten in categories gespeichert werden.");
   } catch (e) {
-    console.log("Daten konnten nicht in categories gespeichert werden " + e);
+    Alert.alert("Kategorie", "Konnte nicht in Sqlite gespeichert werden.");
   }
 }
 
@@ -117,20 +103,15 @@ export async function save_in_exercise_entries_handler(
       duration: duration,
     });
     setExercises(array);
-
-    console.log("Daten wurden erfolgreich in exercises_entries gespeichert");
-  } catch (e) {
-    console.log("Daten wurden nicht in exercises_entries gespeichert" + e);
-  }
+  } catch (e) {}
 }
 
 export async function delete_one_category(db, id) {
   try {
     const query = `DELETE FROM categories WHERE id = ?`;
     db.runAsync(query, [id]);
-    console.log("Kategorie wurde erfolgreich gelöscht ");
   } catch (error) {
-    console.log("Kategorie konnte nicht gelöscht werden");
+    Alert.alert("Kategorie", "Konnte nicht in Sqlite gelöscht werden.");
   }
 }
 
@@ -139,10 +120,7 @@ export async function delete_one_exercise(db, id) {
   try {
     const query = `DELETE FROM exercise_entries WHERE id = ?`;
     db.runAsync(query, [id]);
-    console.log("Exercise wurde erfolgreich gelöscht.");
-  } catch (error) {
-    console.log("Exercise konnte nicht gelöscht werden.");
-  }
+  } catch (error) {}
 }
 
 //Tabelle löschen.
@@ -150,10 +128,7 @@ export async function delete_table(db) {
   try {
     const query = `DROP TABLE IF EXISTS exercise_entries;`;
     await db.execAsync(query);
-    console.log("Tabelle wurde erfolgreich gelöscht");
-  } catch (e) {
-    console.log("Tabelle konnte nicht gelöscht werden");
-  }
+  } catch (e) {}
 }
 
 //All Tabellen werden angezegt in der console.
@@ -165,11 +140,5 @@ export async function alle_tabellen(db) {
   WHERE type='table'
   ORDER BY name;
 `);
-
-    console.log(tables);
-
-    console.log("Die Tabellen wurden erfolgreich gelöscht.");
-  } catch (e) {
-    console.log("Die Tabellen konnten NICHT gelöscht werden.");
-  }
+  } catch (e) {}
 }
