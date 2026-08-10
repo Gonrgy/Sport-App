@@ -47,8 +47,6 @@ export default function DashboardScreen({ navigation }) {
 
   useEffect(() => {
     async function fetchData() {
-      //await alle_tabellen(db);
-      //await delete_table(db);
       await read_categories_data_handler(db, setCategories);
       await read_exercise_entries_data_handler(db, setExercises);
     }
@@ -60,25 +58,38 @@ export default function DashboardScreen({ navigation }) {
       <StatusBar style="light" />
       <View style={styles.header}>
         <Text style={styles.sectionLabel}>DASHBOARD</Text>
-        <Text style={styles.title}>My Calisthenics Library</Text>
+        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+          My Calisthenics Library
+        </Text>
+      </View>
+
+      <View style={styles.filterRow}>
+        {filters.map((text, index) => (
+          <TouchableOpacity
+            onPress={() => setFilterName(text)}
+            key={index}
+            style={[
+              styles.filterPill,
+              filterName === text && styles.filterPillActive,
+            ]}
+            activeOpacity={0.8}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                filterName === text && styles.filterTextActive,
+              ]}
+            >
+              {text}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.filterRow}>
-          {filters.map((text, index) => (
-            <TouchableOpacity
-              onPress={() => setFilterName(text)}
-              key={index}
-              style={styles.filterPill}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.filterText}>{text}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
         <View style={styles.grid}>
           {exercises_use_memo_handler_array.map((item) => (
             <TouchableOpacity
@@ -137,7 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     color: "#ffffff",
     fontWeight: "800",
   },
@@ -149,7 +160,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    marginBottom: 18,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: "#0b1220",
   },
   filterPill: {
     backgroundColor: "#152239",
@@ -158,9 +171,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginBottom: 10,
   },
+  filterPillActive: {
+    backgroundColor: "#4f46e5",
+    borderWidth: 2,
+    borderColor: "#6366f1",
+  },
   filterText: {
     color: "#d7e0f4",
     fontSize: 13,
+  },
+  filterTextActive: {
+    color: "#ffffff",
+    fontWeight: "700",
   },
   grid: {
     flexDirection: "row",

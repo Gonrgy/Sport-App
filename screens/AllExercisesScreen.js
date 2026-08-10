@@ -40,6 +40,7 @@ export default function AllExercisesScreen({ navigation, route }) {
     return maxId;
   }
 
+  // ändert die Farbe von den angezeigten Übungen wenn sie geöffnet werden.
   function style_handler(
     section,
     style,
@@ -53,6 +54,7 @@ export default function AllExercisesScreen({ navigation, route }) {
     return design;
   }
 
+  //Sorgt dafür das wenn man auf die Übung klickt die Übung geöffnet wird oder geschlossen wird.
   const visibleSections = sections.map((section) => ({
     ...section,
     data: expandedSections[section.title] ? section.data : [],
@@ -71,17 +73,6 @@ export default function AllExercisesScreen({ navigation, route }) {
     });
     setExercises(filterData);
   }
-
-  /*
-  //Das höchste Gewicht wird rausgefiltered.
-  function get_highest_weight() {
-    const array = [...filteredArray];
-    const maxId = array.reduce((max, arrayWert) => {
-      return arrayWert.weight > max ? arrayWert.weight : max;
-    }, 0);
-    return maxId;
-  }
-*/
 
   /*
   // function um die reps etc zu addieren.

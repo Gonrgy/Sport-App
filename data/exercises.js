@@ -60,7 +60,7 @@ export const libraryItems = [
     title: "Incline Pushups",
     subtitle: "Brust",
     image: require("../assets/uebungen/incline-pushups.webp"),
-    tags: ["Schulter", "Brust"],
+    tags: ["Brust"],
   },
   {
     id: "10",
@@ -95,7 +95,7 @@ export const libraryItems = [
     title: "Ring Pushups",
     subtitle: "Brust",
     image: require("../assets/uebungen/ring-pushups.webp"),
-    tags: ["Schulter", "Trizeps"],
+    tags: ["Schulter", "Brust"],
   },
   {
     id: "15",
@@ -109,21 +109,21 @@ export const libraryItems = [
     title: "Straight Bar Dips",
     subtitle: "Brust",
     image: require("../assets/uebungen/straight-bar-dips.webp"),
-    tags: ["Trizeps", "Brust", "Schulter"],
+    tags: ["Trizeps", "Brust"],
   },
   {
     id: "17",
     title: "Incline explosive Push ups",
     subtitle: "Brust",
     image: require("../assets/uebungen/incline-explosive-pushups.webp"),
-    tags: ["Trizeps", "Brust", "Schulter"],
+    tags: ["Brust", "Schulter"],
   },
   {
     id: "18",
     title: "Explosive Push Ups",
     subtitle: "Brust",
     image: require("../assets/uebungen/explosive-pushups.webp"),
-    tags: ["Trizeps", "Brust", "Schulter"],
+    tags: ["Brust", "Schulter"],
   },
   {
     id: "19",
@@ -137,7 +137,7 @@ export const libraryItems = [
     title: "Incline Diamond Pushups",
     subtitle: "Trizeps",
     image: require("../assets/uebungen/incline-diamond-pushups.webp"),
-    tags: ["Trizeps", "Brust", "Schulter"],
+    tags: ["Brust", "Schulter"],
   },
   {
     id: "21",
@@ -225,7 +225,7 @@ export const imageMap = {
   "Negative Pull Ups": require("../assets/uebungen/negative-pullups.webp"),
   "Hammer Curls": require("../assets/uebungen/hammer-curls.webp"),
   "Bizeps Curls": require("../assets/uebungen/bizeps-curls.webp"),
-  "Pronation Hold": require("../assets/uebungen/bizeps-curls.webp"),
+  "Pronation Hold": require("../assets/uebungen/pronation.webp"),
 };
 
 export const filters = [
